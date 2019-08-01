@@ -1,55 +1,93 @@
-import React from "react";
+import React, { Component } from "react";
 //import logo from './logo.svg';
 import "./App.css";
 import NavBar from "./components/navBar";
 import Dashboard from "./components/home";
 import SignUp from "./components/sign-up";
 import LogIn from "./components/logIn";
-import MovieInfo from "./components/movieInfo"
+import MovieInfo from "./components/movieInfo";
 import { Route, Switch } from "react-router-dom";
-import axios from "axios";
-function App() {
-  let moviesInSearch = [];
+import Axios from "axios";
+class App extends Component {
+  moviesInSearch = [];
+  state = {
+    currentlyLoggedIn: null
+  };
 
-  function searchBar(e) {
-    e.preventDefault();
-    axios
-      .get(`https://tv-v2.api-fetch.website/movies/1`, {
-        params: {
-          keywords: e.target.value
-        }
-      })
-      .then(movies => {
-        console.log("the movies", movies);
-        moviesInSearch = [movies];
-        console.log("movies in search", moviesInSearch);
-      })
-      .catch(err => console.log(err));
-  }
+  //  searchBar=(e)=> {
+  //   e.preventDefault();
+  //   Axios
+  //     .get(`https://tv-v2.api-fetch.website/movies/1`, {
+  //       params: {
+  //         keywords: e.target.value
+  //       }
+  //     })
+  //     .then(movies => {
+  //       console.log("the movies", movies);
+  //       this.moviesInSearch = [movies];
+  //       console.log("movies in search", this.moviesInSearch);
+  //     })
+  //     .catch(err => console.log(err));
+  // }
 
-  function getCurrentlyLoggedInUser(){
-    this.service.currentUser()
-    .then((theUser)=>{
-      this.setState({currentlyLoggedIn: theUser})
-    })
-    .catch(()=>{
-      this.setState({currentlyLoggedIn: null})
-    })
-  }
-  componentDidMount(){
+  getCurrentlyLoggedInUser = () => {
+    Axios.get("http://localhost:5000/getcurrentuser", { withCredentials: true })
+      .then(response => {
+        console.log("yay really fetching the user now");
+        let theUser = response.data;
+        this.setState({ currentlyLoggedIn: theUser });
+        return theUser;
+      })
+      .catch(() => {
+        this.setState({ currentlyLoggedIn: null });
+      });
+  };
+
+  componentDidMount() {
     this.getCurrentlyLoggedInUser();
   }
-  return (
-    <div className="App">
-      <NavBar search={searchBar} />
-      <Switch>
-        <Route exact path="/"> <Dashboard /> </Route>
-        <Route exact path="/movieInfo/:id" component={MovieInfo}></Route>
-        <Route exact path="/signUp" getUser={getCurrentlyLoggedInUser} component={SignUp}></Route>
-        <Route exact path="/logIn" getUser={getCurrentlyLoggedInUser} component={LogIn}></Route>
-      </Switch>
-    </div>
-  );
+
+  logout = () => {
+    Axios.post(
+      "http://localhost:5000/logout",
+      {},
+      { withCredentials: true }
+    )
+      .then(response => {
+        console.log(response);
+        this.getCurrentlyLoggedInUser();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  render() {
+    return (
+      <div className="App">
+        <NavBar logout={this.logout} search={this.searchBar} user={this.state.currentlyLoggedIn} />
+        <Switch>
+          <Route exact path="/">
+            <Dashboard />
+          </Route>
+
+          <Route exact path="/movieInfo/:id" component={MovieInfo} />
+          <Route
+            exact
+            path="/signUp"
+            render={props => (
+              <SignUp {...props} getUser={this.getCurrentlyLoggedInUser} />
+            )}
+          />
+          <Route
+            exact
+            path="/logIn"
+            render={props => <LogIn {...props} getUser={this.getCurrentlyLoggedInUser} />}
+          />
+        </Switch>
+      </div>
+    );
+  }
 }
 
 export default App;

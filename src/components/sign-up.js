@@ -4,60 +4,81 @@ import Axios from "axios";
 class signUp extends Component{
 state = {
   username:"",
-  password:""
+  password:"",
+  nickName:"",
+  password2:"",
+  user : {},
 }
-signUp = (username,password)=>{
-  Axios.post('http://localhost:5000/signup',{username:username, password:password})
-  .then(response=> response.data)
-}
-tryToSignUp=(e)=>{
-  e.preventDefault();
-  const userName = this.state.usernameInput;
+tryToSignUp = (e)=>{
+  e.preventDefault()
+  const username = this.state.username;
   const password = this.state.password;
+  const nickName = this.state.nickName;
+  const password2= this.state.password2;
+  console.log("GOING TO THE BACK END", username, password, nickName)
 
-  this.signUp()
-  .then(()=>{
+  Axios.post('http://localhost:5000/signup',
+  {
+    username:username, 
+    password:password,
+    nickName:nickName,
+    password2: password2
+  },{withCredentials:true})
+  .then(response=> {
     this.props.getUser();
+
+    this.setState({
+      user:response.data.user
+    }, () => {
+      this.props.history.push('/')
+    })
+  })
+} 
+updateUser=e=>{
+ console.log(e.target.name);
+  this.setState({
+    [e.target.name]: e.target.value,
   })
 }
+
+
 render(){
   return(
-    <div class = "userForm container hoverable">
+    <div className = "userForm container hoverable">
       <h3>Create your Account</h3>
     
-<div class="row">
-    <form class="col s12" onSubmit={this.trySignUp}>
-      <div class="row">
-        <div class="input-field col s6">
-          <input  id="first_name" type="text" class="validate" />
-          <label for="first_name">First Name</label>
+<div className="row">
+    <form className="col s12" onSubmit={this.tryToSignUp}>
+      <div className="row">
+         <div className="input-field col s12">
+          <input placeholder="Name" id="nickName" name="nickName" type="text" class="validate" onChange={e=>this.updateUser(e)}/>
+          <label htmlfor="nickName"></label>
+         </div>
+          <div className="input-field col s12">
+          <input id="email" type="text" name="username" placeholder="email" class="validate" onChange={e=>this.updateUser(e)}/>
+          <label htmlfor="email"></label>
+          </div>
+      </div>
+      <div className="row">
+        <div className="input-field col s12">
+          <input id="password" type="password" name="password" placeholder="enter password" class="validate"  onChange={e => this.updateUser(e)} />
+          <label htmlfor="password"></label>
         </div>
-        <div class="input-field col s6">
-          <input id="last_name" type="text" class="validate"/>
-          <label for="last_name">Last Name</label>
+        <div className="input-field col s12">
+          <input id="password2" type="password" name="password2" placeholder="confirm password" class="validate"  onChange={e => this.updateUser(e)} />
+          <label htmlfor="password2"></label>
         </div>
       </div>
-      <div class="row">
-        <div class="input-field col s12">
-          <input id="password" type="password" class="validate"/>
-          <label for="password">Password</label>
-        </div>
+      <div className="row">
+   
       </div>
-      <div class="row">
-        <div class="input-field col s12">
-          <input id="email" type="email" class="validate" />
-          <label for="email">Email</label>
-        </div>
-      </div>
-      <button class="btn waves-effect waves-light" type="submit" name="action">Create
-     <i class="material-icons right">done</i>
+     <button className="btn waves-effect waves-light" type="submit" name="action">Create
+     <i className="material-icons right">done</i>
      </button>
     </form>
   </div>
-        
-  </div>
-
-   
+    
+  </div>  
   );
 }
 }

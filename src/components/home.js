@@ -26,7 +26,7 @@ getMovies=()=>{
     //console.log(this.state.movies)
     return(
     
-     <Link className="links"  to={`/movieInfo/${movies.imdb_id}`}><img className="imageSize" src={movies.images.banner} key={i} alt=""/></Link>
+     <Link className="links" key={i} to={`/movieInfo/${movies.imdb_id}`}><img className="imageSize" src={movies.images.banner}  alt=""/></Link>
   
     );
   })

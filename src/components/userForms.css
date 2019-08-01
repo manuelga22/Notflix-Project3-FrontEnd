@@ -2,5 +2,15 @@
   border: solid black;
   border-radius: 10px;
 }
+.logIn{
+  padding: 3%;
+  border: solid;
+  border-radius: 5px;
+}
+.logInCart{
+  margin: 10% 5%;
+  display:flex;
+  justify-content: center;
+}
 
 
