@@ -11,6 +11,7 @@ state = {
 }
 
 componentDidMount() {
+
   axios.get('http://localhost:5000/getMovies')
     .then((themovies)=>{
       this.setState({
@@ -18,30 +19,32 @@ componentDidMount() {
         loading: false
       })
     }).catch((err)=>console.log(err))
+  
 }
 
 getMovies=()=>{
-
-  return this.state.movies.map((movies,i)=>{
+  
+    return this.state.movies.map((movies,i)=>{
     //console.log(this.state.movies)
-    return(
-    
-     <Link className="links" key={i} to={`/movieInfo/${movies.imdb_id}`}><img className="imageSize" src={movies.images.banner}  alt=""/></Link>
+    return(    
+     <Link className="links" key={i} to={`/movieInfo/${movies.imdb_id}`}><img className="imageSize hoverable z-depth-5 " src={movies.images.banner}  alt=""/></Link>
   
     );
-  })
+   })
+ 
 
 }
 
 render(){
-  // console.log(this.props.displayMovies);
-  // console.log(this.props);
+
   return(
-  <div className = "movieCart">
+  <div className = "movieCart ">
    
     {
       this.state.loading ?
-      <p>Loading...</p>
+      <div className="progress white">
+      <div className="indeterminate red"></div>
+      </div>
       :
       this.getMovies()
     }
@@ -49,5 +52,6 @@ render(){
    </div>
   );
  }
+
 }
 export default Home;

@@ -5,31 +5,20 @@ import NavBar from "./components/navBar";
 import Dashboard from "./components/home";
 import SignUp from "./components/sign-up";
 import LogIn from "./components/logIn";
+import Profile from "./components/profile";
 import MovieInfo from "./components/movieInfo";
+import showResults from "./components/showResults";
 import { Route, Switch } from "react-router-dom";
 import Axios from "axios";
+import StreamMovie from "./components/streamMovie";
+
 class App extends Component {
   moviesInSearch = [];
   state = {
-    currentlyLoggedIn: null
+    currentlyLoggedIn: null,
+    test: false,
+    movieLink: ""
   };
-
-  //  searchBar=(e)=> {
-  //   e.preventDefault();
-  //   Axios
-  //     .get(`https://tv-v2.api-fetch.website/movies/1`, {
-  //       params: {
-  //         keywords: e.target.value
-  //       }
-  //     })
-  //     .then(movies => {
-  //       console.log("the movies", movies);
-  //       this.moviesInSearch = [movies];
-  //       console.log("movies in search", this.moviesInSearch);
-  //     })
-  //     .catch(err => console.log(err));
-  // }
-
   getCurrentlyLoggedInUser = () => {
     Axios.get("http://localhost:5000/getcurrentuser", { withCredentials: true })
       .then(response => {
@@ -47,31 +36,45 @@ class App extends Component {
     this.getCurrentlyLoggedInUser();
   }
 
-  logout = () => {
-    Axios.post(
-      "http://localhost:5000/logout",
-      {},
-      { withCredentials: true }
-    )
-      .then(response => {
-        console.log(response);
-        this.getCurrentlyLoggedInUser();
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
   render() {
     return (
       <div className="App">
-        <NavBar logout={this.logout} search={this.searchBar} user={this.state.currentlyLoggedIn} />
+        <Route
+          path="/"
+          render={props => (
+            <NavBar
+              {...props}
+              logout={this.logout}
+              search={this.searchBar}
+              getUser={this.getCurrentlyLoggedInUser}
+              user={this.state.currentlyLoggedIn}
+              searchBar={e => this.searchBar(e)}
+            />
+          )}
+        />
         <Switch>
-          <Route exact path="/">
-            <Dashboard />
-          </Route>
+          <Route
+            exact
+            path="/"
+            render={props => (
+              <Dashboard {...props} moviesToShow={this.state.moviesToShow} />
+            )}
+          />
+          <Route
+            exact
+            path="/movieInfo/:id"
+            render={props => (
+              <MovieInfo
+                {...props}
+                user={this.state.currentlyLoggedIn}
+                getUser={this.getCurrentlyLoggedInUser}
+                link={this.state.movieLink}
+              />
+            )}
+          />
 
-          <Route exact path="/movieInfo/:id" component={MovieInfo} />
+          <Route exact path="/showResults/:movies" component={showResults} />
+
           <Route
             exact
             path="/signUp"
@@ -79,10 +82,25 @@ class App extends Component {
               <SignUp {...props} getUser={this.getCurrentlyLoggedInUser} />
             )}
           />
+
           <Route
             exact
             path="/logIn"
-            render={props => <LogIn {...props} getUser={this.getCurrentlyLoggedInUser} />}
+            render={props => (
+              <LogIn {...props} getUser={this.getCurrentlyLoggedInUser} />
+            )}
+          />
+
+          <Route
+            exact
+            path="/profile"
+            render={props => (
+              <Profile
+                {...props}
+                getUser={this.getCurrentlyLoggedInUser}
+                user={this.state.currentlyLoggedIn}
+              />
+            )}
           />
         </Switch>
       </div>
