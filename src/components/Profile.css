@@ -1,0 +1,15 @@
+.ProfilePicture{
+  height: 40%;
+  width:37%;
+  border: solid red
+}
+.ProfileInfo{
+  display:flex;
+  justify-content: center;
+  justify-content:space-around;
+  padding: 10%;
+  flex-wrap:wrap;
+}
+.deleteBtn{
+  margin-left:5%;
+}

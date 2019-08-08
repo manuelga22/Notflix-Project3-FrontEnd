@@ -1,22 +1,33 @@
-.movieCart{
-  padding: 2%;
-  display:flex;
-  flex-wrap:wrap;
+.movieCartHome{
+ padding: 2%;
+ 
+ position: relative;
+  overflow-x: scroll;
+  height:400px;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 .bannerOfTheMovies{
  
   display:flex;
-
-}
-.imageSize{
  
-  width: 100%;
-  height:100%;
 }
+.imageSizeHome{
+  margin-top: 10%;
+  width: 220px;
+  height:310px; 
+}
+
 .links{
   padding: 5px;
-  width: 10%;
-  height:10%;
+  width: 200px;
+  height:320px;
+}
+.titleCategory{
+  position: absolute;
+  color:white;
+  border-radius: 60%;
+  float:left;
 }
 .infoOfMovies{
   padding-top: 5%;
@@ -38,7 +49,38 @@
   display:flex;
   flex-direction: column;
 }
-.addToFavoriteBtn{
-  
+.linksOfFavorites{
+  padding: 5px;
+  width: 20%;
+  height:20%;
 }
 
+.zoom {
+  transition: transform .2s;
+  margin: 0 auto;
+}
+
+.zoom:hover {
+  transform: scale(1.2); 
+}
+
+.footerConfiguration{
+
+height:100%;
+}
+#style-3::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+#style-3::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+#style-3::-webkit-scrollbar-thumb
+{
+	background-color: #ff0000;
+}

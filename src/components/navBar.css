@@ -1,5 +1,14 @@
 .searchBar{
   
-  background-color: rgba(255, 255, 255, 0) !important;
-  box-shadow: none !important;
+  /* background-color: rgba(255, 255, 255, 0) !important; */
+  /* box-shadow: none !important; */
+}
+.colorNav{
+  background-color: rgb(0,0,0,1)
+}
+.logo{
+  padding-left: 5%;
+}
+.welcomeUser{
+  margin-right:10px;
 }

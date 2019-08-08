@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import './userForms.css'
-import './userForms.css'
+
 import Axios from "axios";
 
 class LogIn extends Component{
@@ -29,15 +29,15 @@ class LogIn extends Component{
   render(){
    return(
 
-    <div className= "   logInCart">
+    <div className= "logInCart font-color ">
      
-     <form className="logIn hoverable" onSubmit={this.tryToLogin}>
+     <form className="logIn hoverable font-color" onSubmit={this.tryToLogin}>
      <h2>Log-In</h2>
-       <label for="username"></label>
+       <label  for="username"></label>
        <input name="username" placeholder="email" onChange={this.updateInputs}></input>
        <label for="password"></label>
        <input name="password"placeholder="password" onChange={this.updateInputs}></input>
-       <button className="btn waves-effect waves-light">log-in</button>
+       <button className="btn waves-effect waves-light red">log-in</button>
      </form>
     </div>
    );

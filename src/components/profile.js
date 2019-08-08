@@ -2,20 +2,32 @@ import React, { Component, Fragment } from "react";
 import { Modal, Button } from "react-materialize";
 import "materialize-css";
 import Axios from "axios";
+import "./Profile.css";
 
 class Profile extends Component {
   trigger = <Button>Edit</Button>;
   state = {
     nickName: "",
-    username: ""
+    username: "",
+    image:null
   };
+
+  updateFileInState = (e)=>{
+    this.setState({image: e.target.files[0]});
+  }
+
   printTheUserInfo = () => {
     if (this.props.user) {
       return (
-        <Fragment>
-          <h3>{this.props.user.nickName}</h3>
-          <h4>{this.props.user.username}</h4>
-        </Fragment>
+        <div className="ProfileInfo ">
+          <img className="ProfilePicture" src={this.props.user.image} alt=""></img>
+          <div className="profileInfo2">
+          <h3><b>Name:</b> {this.props.user.nickName}</h3>
+          <h4><b>Email:</b> {this.props.user.username}</h4>
+       
+         
+          </div>
+        </div>
       );
     }
   };
@@ -29,9 +41,11 @@ class Profile extends Component {
   update = e => {
     const thenickName = this.state.nickName;
     const theUserName = this.state.username;
+    const theImage = this.state.image;
     Axios.post(`http://localhost:5000/user/edit/${this.props.user._id}`, {
       nickName: thenickName,
-      username: theUserName
+      username: theUserName,
+      image: theImage
     })
       .then(() => {
         console.log("updating user info");
@@ -47,6 +61,7 @@ class Profile extends Component {
     }).catch((err)=>console.log(err))
   }
 
+
  render() {
     return (
       <Fragment>
@@ -55,6 +70,8 @@ class Profile extends Component {
           <form onSubmit={e => this.update(e)}>
             {this.props.user ? (
               <Fragment>
+                <label>Change your profile picture</label>
+                <input type="file" onChange={this.updateFileInState} />
                 <label for="username" />
                 <input
                   name="username"
@@ -70,7 +87,7 @@ class Profile extends Component {
                   onChange={e => this.handleChange(e)}
                   value={this.state.nickName}
                 />
-
+                
                 <button className="btn">Submit</button>
               </Fragment>
             ) : (
@@ -79,9 +96,9 @@ class Profile extends Component {
          
           </form>
         </Modal>
-        <button onClick={this.deleteUser} className="btn">
-              Delete
-            </button>
+        <button onClick={this.deleteUser} className="btn deleteBtn">
+              Delete Your Profile
+        </button>
       </Fragment>
     );
   }
