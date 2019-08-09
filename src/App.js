@@ -9,6 +9,7 @@ import Profile from "./components/profile";
 import Favorites from "./components/favorites";
 import MovieInfo from "./components/movieInfo";
 import showResults from "./components/showResults";
+import SeeReviews from "./components/seeReviews";
 import Footer from "./components/footer"
 import { Route, Switch } from "react-router-dom";
 import axios from "axios";
@@ -31,6 +32,7 @@ class App extends Component {
       .get("http://localhost:5000/getcurrentuser", { withCredentials: true })
       .then(response => {
         console.log("yay really fetching the user now");
+        
         let theUser = response.data;
         this.setState({ currentlyLoggedIn: theUser });
         return theUser;
@@ -38,81 +40,19 @@ class App extends Component {
       .catch(() => {
         this.setState({ currentlyLoggedIn: null });
       });
+     
   };
 
   componentDidMount() {
     this.getCurrentlyLoggedInUser();
-    if(this.state.user){
-    this.fecthInfoOfFavorites();
-    }
+    
   }
 
-  // shouldComponentUpdate(nextProps, nextState){
-  //   if(nextState.moviesToShowInFavorites.length !== this.state.moviesToShowInFavorites.length){
-  //    return true;
-  //   }
-  //  return false
-  // }
 
   //list of favorites stuff
-  fecthInfoOfFavorites = () => {
-    setTimeout(() => {
-      this.getTheIdObjectsOfMoviesInFavorites();
-    },100)
-    setTimeout(() => {
-      this.getIdsOfMoviesInFavorites();
-    }, 200);
-    setTimeout(() => {
-      this.getActualMoviesWithTheInfo();
-    }, 300);
-  };
-
-  getTheIdObjectsOfMoviesInFavorites = () => {
-    console.log(this.state.currentlyLoggedIn);
-    this.setState({
-      idObjectsMoviesInFavorites: this.state.currentlyLoggedIn.favorites
-    });
-    console.log("ids of movies", this.state.idObjectsMoviesInFavorites);
-  };
-
-  getIdsOfMoviesInFavorites = () => {
-    let arr = [];
-    this.state.idObjectsMoviesInFavorites.forEach(moviesId => {
-      axios
-        .get(`http://localhost:5000/getIdOfmovie/${moviesId}`)
-        .then(movie => {
-          arr.push(movie.data);
-          this.setState({
-            imdbIdsOfMovie: arr
-          });
-        })
-        .catch(err => console.log(err));
-    });
-    console.log("imdbIdsOfMovie", this.state.imdbIdsOfMovie);
-  };
-
-  getActualMoviesWithTheInfo = () => {
-    let arr = [];
-    this.state.imdbIdsOfMovie.forEach(imdbId => {
-      axios
-        .get(`http://localhost:5000/getInfoOfmovie/${imdbId}`)
-        .then(movieInfo => {
-          arr.push(movieInfo);
-          this.setState({
-            moviesToShowInFavorites: arr
-          });
-        });
-    });
-  };
-
   deleteFromList = (movieID, userID) => {
     console.log("deleting in app.js");
-    axios
-      .post(`http://localhost:5000/deleteFromFavorites/${userID}/${movieID}`)
-      .then(res => {
-        console.log(res);
-      });
-      
+    return axios.post(`http://localhost:5000/deleteFromFavorites/${userID}/${movieID}`, {})   
   };
 
   emptyTheStateOfFavorites = () => {
@@ -166,7 +106,13 @@ class App extends Component {
           />
 
           <Route exact path="/showResults/:movies" component={showResults} />
-
+          <Route exact path="/movieReview/:movieId" render={props=>(
+            <SeeReviews
+            {...props}
+            user={this.state.currentlyLoggedIn}
+             />
+            )}
+            />
           <Route
             exact
             path="/favorites"
@@ -175,12 +121,11 @@ class App extends Component {
                 {...props}
                 user={this.state.currentlyLoggedIn}
                 getUser={this.getCurrentlyLoggedInUser}
-                getFavorites={this.getTheIdObjectsOfMoviesInFavorites}
-                getMoviesInFavorites={this.getIdsOfMoviesInFavorites}
-                getInfoOfMoviesInFavorites={this.getActualMoviesWithTheInfo}
+      
+                userFavorites = {this.state.idObjectsMoviesInFavorites}
                 deleteFromList={this.deleteFromList}
-                idsOfMovieObjects={this.state.idObjectsMoviesInFavorites}
-                moviesInFavorites={this.state.moviesToShowInFavorites}
+               
+                getActualMoviesWithTheInfo={this.getActualMoviesWithTheInfo}    
               />
             )}
           />

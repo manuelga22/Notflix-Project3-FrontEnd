@@ -3,6 +3,7 @@ import "./userForms.css";
 import Axios from "axios";
 class signUp extends Component {
   state = {
+    message:null,
     username: "",
     password: "",
     nickName: "",
@@ -10,6 +11,7 @@ class signUp extends Component {
     newImage: null,
     user: {}
   };
+
   tryToSignUp = e => {
     e.preventDefault();
     const username = this.state.username;
@@ -17,20 +19,22 @@ class signUp extends Component {
     const nickName = this.state.nickName;
     const password2 = this.state.password2;
     const theImage = this.state.newImage;
+
+    let userInfo = new FormData();
+    userInfo.append('username',username );
+    userInfo.append('password', password);
+    userInfo.append('nickName', nickName);
+    userInfo.append('password2', password2);
+    userInfo.append('image', theImage);
   
     Axios.post(
       "http://localhost:5000/signup",
-      {
-        username: username,
-        password: password,
-        nickName: nickName,
-        password2: password2,
-        image: theImage
-      },
-      { withCredentials: true }
+       userInfo,{ headers: {
+        'Content-Type': 'multipart/form-data',
+      }, withCredentials: true }
     ).then(response => {
       this.props.getUser();
-
+      
       this.setState(
         {
           user: response.data.user
@@ -39,16 +43,22 @@ class signUp extends Component {
           this.props.history.push("/");
         }
       );
-    });
+    }).catch((res)=>console.log(res));
   };
+  handleError=()=>{
+
+  }
   updateUser = e => {
     console.log(e.target.name);
     this.setState({
       [e.target.name]: e.target.value
     });
   };
+
   updateFileInState = e => {
+
     this.setState({newImage: e.target.files[0]});
+
   };
 
   render() {
@@ -75,7 +85,8 @@ class signUp extends Component {
                 <input
                   type="file"
                   class="validate"
-                  onChange={e => this.updateFileInState(e)}
+                  name="image"
+                  onChange={this.updateFileInState}
                 />
               </div>
               <div className="input-field col s12">
@@ -125,6 +136,14 @@ class signUp extends Component {
             </button>
           </form>
         </div>
+       {this.state.message?
+         <div>
+           {this.handleError()}
+        </div>
+        :
+        <p></p>
+       }
+
       </div>
     );
   }

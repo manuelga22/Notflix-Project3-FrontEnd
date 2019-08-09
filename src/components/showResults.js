@@ -39,7 +39,7 @@ showMovies=()=>{
   return this.state.movieResults.map((movies,i)=>{
     //console.log(this.state.movies)
     return(    
-     <Link className="links" key={i} to={`/movieInfo/${movies.imdb_id}`}><img className="imageSize" src={movies.images.banner}  alt=""/></Link> 
+     <Link className="links" key={i} to={`/movieInfo/${movies.imdb_id}`}><img className="imageSize zoom" src={movies.images.banner}  alt=""/></Link> 
     );
   })
 } 

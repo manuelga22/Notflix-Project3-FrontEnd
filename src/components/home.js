@@ -12,7 +12,6 @@ state = {
 }
 
 componentDidMount() {
-
 this.fetchPopularMovies();
 this.fetchNewestMovies();
 }

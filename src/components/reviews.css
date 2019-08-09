@@ -1,0 +1,11 @@
+.reviewCart{
+  border: solid red;
+  
+
+}
+.reviewBtn{
+  width:100%;
+}
+.btnReview{
+  display:flex;
+}

@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import axios from "axios";
-//import { Link, Route, Switch } from "react-router-dom";
+import { Link} from "react-router-dom";
 //import StreamMovie from "./streamMovie";
 import "./home.css";
+import { whileStatement } from "@babel/types";
 
 //import downloat from 'downloat';
 //import magnet2torrent from 'magnetorrent'
@@ -17,10 +18,12 @@ class movieInfo extends Component {
     opened: false,
     torrenthash: "",
     downloadLink: "",
-    checkbox: true
-  };
+    checkbox: true,
 
-  componentDidMount() {
+    comment:"",
+    isTheMovieInFavorites:false
+  };
+  getLinksForDownload=()=>{
     const parseTorrent = require("parse-torrent");
     axios
       .get(`http://localhost:5000/movieInfo/${this.props.match.params.id}`)
@@ -45,6 +48,11 @@ class movieInfo extends Component {
       });
   }
 
+  componentDidMount() {
+   this.getLinksForDownload();
+   setTimeout(()=>{  this.isMovieInFavorites();},500)
+  }
+
   addToFavorites = e => {
     this.setState(
       {
@@ -52,6 +60,7 @@ class movieInfo extends Component {
       },
       () => {
         if (!this.state.checkbox) {
+
           axios
             .post(
               `http://localhost:5000/addToFavorites/${this.props.user._id}/${
@@ -60,51 +69,94 @@ class movieInfo extends Component {
               {}
             )
             .then(res => {
+              // call the function to get the current user in App.js
+              this.props.getUser();
               console.log(res);
             }); 
+            this.setState({state:this.state})
         } else {
-          console.log(this.props);
+
           this.props.user.favorites.forEach(ObjectIds => {
-            console.log("looping");
+      
             axios
-              .get(`http://localhost:5000/getMovie/${ObjectIds}`)
+              .get(`http://localhost:5000/getMovie/${ObjectIds._id}`)
               .then(res => {
+          
                 if (this.props.match.params.id === res.data.movie) {
-                  console.log("deleting");
-                  console.log("objectId", ObjectIds);
-                  console.log("user Id", this.props.user._id);
-                  console.log(
-                    "moviesId",
-                    this.props.match.params.id,
-                    res.data.movie
-                  );
-                  this.props.deleteFromList(ObjectIds, this.props.user._id);
+               
+                  this.props.getUser();
+                  this.props.deleteFromList(ObjectIds._id, this.props.user._id);
                 }
+                this.props.getUser();
               });
           });
         }
       }
     );
   };
+  
+  handleTextArea=(e)=>{
+    this.setState({
+      comment: e.target.value
+    })
+  }
+
+  handleMovieReview=(e)=>{
+    e.preventDefault();
+    const comment = this.state.comment;
+    this.props.user.favorites.forEach(async(movies)=>{
+      if(movies.movies ===this.props.match.params.id ){
+        await axios.post(`http://localhost:5000/createNote/${movies._id}`,{
+          review:comment
+        })
+      }
+    })
+     
+  } 
+
+  isMovieInFavorites=()=>{
+    this.props.user.favorites.forEach((movies)=>{
+        if(movies.movies ===this.props.match.params.id ){
+          this.setState({
+            isTheMovieInFavorites:true
+          }) 
+        }
+    }) 
+  }
 
   getInfoOfMovie = () => {
+    const style={
+      color:'white',
+    }
     return (
       <div className="container infoOfMovies">
         <div className="titleAndSynopsis">
           <h1 className="titleInfo">{this.state.title}</h1>
           <p className="synopsis">{this.state.synopsis}</p>
-          <a className="btn downloadBtn" href={this.state.downloadLink}>
+          <a className="btn downloadBtn " href={this.state.downloadLink}>
             Download
           </a>
 
           {this.props.user ? (
             // <form >
+            <Fragment>
             <p>
               <label>
                 <input type="checkbox" onChange={this.addToFavorites} />
                 <span>Add to favorites</span>
               </label>
-            </p>
+            </p> 
+              {this.state.isTheMovieInFavorites?
+                  <form onSubmit={this.handleMovieReview}>
+                  <textarea type="text" placeholder="Add a review" style={style} onChange={this.handleTextArea} required></textarea>
+                  <button  className="btn grey">submit</button>
+                  </form>
+                  :
+                  <p></p>
+              }
+          
+              <Link to={`/movieReview/${this.props.match.params.id}`}><button className="btn red">See Reviews</button></Link>
+              </Fragment>
           ) : (
             // </form>
             <p />
@@ -116,9 +168,7 @@ class movieInfo extends Component {
     );
   };
 
-  showComponent = () => {
-    this.setState({ opened: true });
-  };
+ 
 
   render() {
     return (
@@ -138,3 +188,8 @@ class movieInfo extends Component {
   }
 }
 export default movieInfo;
+
+
+ // showComponent = () => {
+  //   this.setState({ opened: true });
+  // };

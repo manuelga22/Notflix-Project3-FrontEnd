@@ -7,6 +7,7 @@ import "./Profile.css";
 class Profile extends Component {
   trigger = <Button>Edit</Button>;
   state = {
+
     nickName: "",
     username: "",
     image:null
@@ -60,24 +61,32 @@ class Profile extends Component {
       this.props.history.push('/');
     }).catch((err)=>console.log(err))
   }
-
+  
 
  render() {
+  var style = {
+    color: 'black',
+  }; 
     return (
       <Fragment>
         {this.printTheUserInfo()}
         <Modal header="Edit Your Profile Information" trigger={this.trigger}>
-          <form onSubmit={e => this.update(e)}>
+          <form onSubmit={e => this.update(e)}  style={style}>
             {this.props.user ? (
+           
               <Fragment>
+              <script>
+                let v = this.props.user.username;
+              </script>
                 <label>Change your profile picture</label>
-                <input type="file" onChange={this.updateFileInState} />
+                <input type="file" onChange={this.updateFileInState}  />
                 <label for="username" />
                 <input
                   name="username"
-                  type="text"
+                  type="email"
                   onChange={e => this.handleChange(e)}
-                  value={this.state.username}
+                  placeholder={this.props.user.username}
+                  style={style}
                 />
 
                 <label for="nickName" />
@@ -85,7 +94,8 @@ class Profile extends Component {
                   name="nickName"
                   type="text"
                   onChange={e => this.handleChange(e)}
-                  value={this.state.nickName}
+                  placeholder={this.props.user.nickName}
+                  style={style}
                 />
                 
                 <button className="btn">Submit</button>
