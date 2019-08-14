@@ -28,7 +28,7 @@ class signUp extends Component {
     userInfo.append('image', theImage);
   
     Axios.post(
-      "http://localhost:5000/signup",
+      `${process.env.REACT_APP_BASEURL}/route/signup`,
        userInfo,{ headers: {
         'Content-Type': 'multipart/form-data',
       }, withCredentials: true }

@@ -16,7 +16,7 @@ this.fetchPopularMovies();
 this.fetchNewestMovies();
 }
 fetchPopularMovies=()=>{
-  axios.get('http://localhost:5000/getMovies')
+  axios.get(`${process.env.REACT_APP_BASEURL}/route/getMovies`)
   .then((themovies)=>{
     this.setState({
       movies: themovies.data.movies,
@@ -25,7 +25,7 @@ fetchPopularMovies=()=>{
   }).catch((err)=>console.log(err))
 }
 fetchNewestMovies=()=>{
-  axios.get("http://localhost:5000/newMovies")
+  axios.get(`${process.env.REACT_APP_BASEURL}/route/newMovies`)
   .then((themovies)=>{
     this.setState({
       newMovies: themovies.data.movies,

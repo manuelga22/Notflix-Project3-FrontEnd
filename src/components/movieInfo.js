@@ -26,7 +26,7 @@ class movieInfo extends Component {
   getLinksForDownload=()=>{
     const parseTorrent = require("parse-torrent");
     axios
-      .get(`http://localhost:5000/movieInfo/${this.props.match.params.id}`)
+      .get(`${process.env.REACT_APP_BASEURL}/route/movieInfo/${this.props.match.params.id}`)
       .then(movies => {
         let Info = movies.data.movieInfo;
         console.log(Info);
@@ -63,7 +63,7 @@ class movieInfo extends Component {
 
           axios
             .post(
-              `http://localhost:5000/addToFavorites/${this.props.user._id}/${
+              `${process.env.REACT_APP_BASEURL}/route/addToFavorites/${this.props.user._id}/${
                 this.props.match.params.id
               }`,
               {}
@@ -79,7 +79,7 @@ class movieInfo extends Component {
           this.props.user.favorites.forEach(ObjectIds => {
       
             axios
-              .get(`http://localhost:5000/getMovie/${ObjectIds._id}`)
+              .get(`${process.env.REACT_APP_BASEURL}/route/getMovie/${ObjectIds._id}`)
               .then(res => {
           
                 if (this.props.match.params.id === res.data.movie) {
@@ -106,7 +106,7 @@ class movieInfo extends Component {
     const comment = this.state.comment;
     this.props.user.favorites.forEach(async(movies)=>{
       if(movies.movies ===this.props.match.params.id ){
-        await axios.post(`http://localhost:5000/createNote/${movies._id}`,{
+        await axios.post(`${process.env.REACT_APP_BASEURL}/route/createNote/${movies._id}`,{
           review:comment
         })
       }
@@ -147,15 +147,18 @@ class movieInfo extends Component {
               </label>
             </p> 
               {this.state.isTheMovieInFavorites?
+              <Fragment>
                   <form onSubmit={this.handleMovieReview}>
                   <textarea type="text" placeholder="Add a review" style={style} onChange={this.handleTextArea} required></textarea>
                   <button  className="btn grey">submit</button>
                   </form>
+                  <Link to={`/movieReview/${this.props.match.params.id}`}><button className="btn red">See Reviews</button></Link>
+                  </Fragment>
                   :
                   <p></p>
               }
           
-              <Link to={`/movieReview/${this.props.match.params.id}`}><button className="btn red">See Reviews</button></Link>
+             
               </Fragment>
           ) : (
             // </form>

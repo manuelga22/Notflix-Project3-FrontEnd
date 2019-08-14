@@ -29,7 +29,7 @@ class App extends Component {
 
   getCurrentlyLoggedInUser = () => {
     axios
-      .get("http://localhost:5000/getcurrentuser", { withCredentials: true })
+      .get(`${process.env.REACT_APP_BASEURL}/route/getcurrentuser`, { withCredentials: true })
       .then(response => {
         console.log("yay really fetching the user now");
         
@@ -52,7 +52,7 @@ class App extends Component {
   //list of favorites stuff
   deleteFromList = (movieID, userID) => {
     console.log("deleting in app.js");
-    return axios.post(`http://localhost:5000/deleteFromFavorites/${userID}/${movieID}`, {})   
+    return axios.post(`${process.env.REACT_APP_BASEURL}/route/deleteFromFavorites/${userID}/${movieID}`, {})   
   };
 
   emptyTheStateOfFavorites = () => {

@@ -15,7 +15,7 @@ state={
  doLogOut = () => {
 
   Axios.post(
-    "http://localhost:5000/logout",
+    `${process.env.REACT_APP_BASEURL}/route/logout`,
     {},
     { withCredentials: true }
   )

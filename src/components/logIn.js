@@ -16,7 +16,7 @@ class LogIn extends Component{
     const username = this.state.username;
     const password = this.state.password;
   
-    Axios.post('http://localhost:5000/login', {
+    Axios.post(`${process.env.REACT_APP_BASEURL}/route/login`, {
       username:username, 
       password:password,
     }, {withCredentials: true})
@@ -36,7 +36,7 @@ class LogIn extends Component{
        <label  for="username"></label>
        <input name="username" placeholder="email" onChange={this.updateInputs} required></input>
        <label for="password"></label>
-       <input name="password"placeholder="password" onChange={this.updateInputs} required></input>
+       <input name="password"placeholder="password" type="password" onChange={this.updateInputs} required></input>
        <button className="btn waves-effect waves-light red">log-in</button>
      </form>
     </div>

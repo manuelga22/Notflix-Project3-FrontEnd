@@ -74,7 +74,7 @@ class Favorites extends Component {
     this.props.user.favorites.forEach(userFavorites => {
       console.log("getting info", userFavorites.movies)
       axios
-        .get(`http://localhost:5000/getInfoOfmovie/${userFavorites.movies}`)
+        .get(`${process.env.REACT_APP_BASEURL}/route/getInfoOfmovie/${userFavorites.movies}`)
         .then(movieInfo => {
           console.log(movieInfo)
           let blah = {...movieInfo.data.movie}

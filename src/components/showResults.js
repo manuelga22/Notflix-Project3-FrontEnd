@@ -13,7 +13,7 @@ componentDidMount() {
 }
 
 fetchMovies = (movies) => {
-  Axios.get(`http://localhost:5000/search/${movies}`)
+  Axios.get(`${process.env.REACT_APP_BASEURL}/route/search/${movies}`)
   .then((response)=>{
     this.setState({
       movieResults: response.data.movie

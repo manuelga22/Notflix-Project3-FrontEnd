@@ -19,7 +19,7 @@ class Reviews extends Component {
       if (movies.movies === this.props.match.params.movieId) {
         try {
           const res = await axios.get(
-            `http://localhost:5000/getReviews/${movies._id}`
+            `${process.env.REACT_APP_BASEURL}/route/getReviews/${movies._id}`
           );
           console.log(res.data.reviews.review);
           this.setState({
@@ -41,7 +41,7 @@ class Reviews extends Component {
         console.log("here");
         try {
           await axios.post(
-            `http://localhost:5000/delete/${movies._id}/${review.review}`,
+            `${process.env.REACT_APP_BASEURL}/route/delete/${movies._id}/${review.review}`,
             {}
           );
           this.getAllReviews();
@@ -59,7 +59,7 @@ class Reviews extends Component {
     this.props.user.favorites.forEach(async (movies, i) => {
       if (movies.movies === this.props.match.params.movieId) {
         try {
-          await axios.post(`http://localhost:5000/update/${movies._id}/${review}/${this.state.theReview}`, {
+          await axios.post(`${process.env.REACT_APP_BASEURL}/route/update/${movies._id}/${review}/${this.state.theReview}`, {
             review: this.state.theReview
           });
           this.getAllReviews();
