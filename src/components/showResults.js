@@ -8,32 +8,31 @@ class showResults extends Component{
   }
 
 componentDidMount() {
+
   const movies = this.props.match.params.movies;
   this.fetchMovies(movies)
 }
 
+shouldComponentUpdate(){
+  
+  const movies = this.props.match.params.movies;
+  this.fetchMovies(movies)
+  return true;
+}
+
 fetchMovies = (movies) => {
-  Axios.get(`${process.env.REACT_APP_BASEURL}/route/search/${movies}`)
+  Axios.get(`${process.env.REACT_APP_BASEURL}/api/movieApi/search/${movies}`)
   .then((response)=>{
     this.setState({
       movieResults: response.data.movie
     })
+    
   }).catch(err=>{
 
     console.log(err)
   })
 }
 
-shouldComponentUpdate(nextProps) {
-  console.log(this.props.match.params.movies, nextProps.match.params.movies)
-  // if(this.props.match.params.movies !== nextProps.match.params.movies) {
-  //   this.fetchMovies(this.props.match.params.movies)
-  //   return true
-  // }
-
-  // return false
-  return true
-}
 
 showMovies=()=>{
   return this.state.movieResults.map((movies,i)=>{

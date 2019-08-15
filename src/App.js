@@ -29,7 +29,7 @@ class App extends Component {
 
   getCurrentlyLoggedInUser = () => {
     axios
-      .get(`${process.env.REACT_APP_BASEURL}/route/getcurrentuser`, { withCredentials: true })
+      .get(`${process.env.REACT_APP_BASEURL}/api/auth/getcurrentuser`, { withCredentials: true })
       .then(response => {
         console.log("yay really fetching the user now");
         
@@ -52,7 +52,7 @@ class App extends Component {
   //list of favorites stuff
   deleteFromList = (movieID, userID) => {
     console.log("deleting in app.js");
-    return axios.post(`${process.env.REACT_APP_BASEURL}/route/deleteFromFavorites/${userID}/${movieID}`, {})   
+    return axios.post(`${process.env.REACT_APP_BASEURL}/api/user/deleteFromFavorites/${userID}/${movieID}`, {})   
   };
 
   emptyTheStateOfFavorites = () => {
@@ -90,6 +90,7 @@ class App extends Component {
               <Dashboard {...props} moviesToShow={this.state.moviesToShow} />
             )}
           />
+
           <Route
             exact
             path="/movieInfo/:id"
@@ -106,6 +107,7 @@ class App extends Component {
           />
 
           <Route exact path="/showResults/:movies" component={showResults} />
+
           <Route exact path="/movieReview/:movieId" render={props=>(
             <SeeReviews
             {...props}
@@ -113,6 +115,8 @@ class App extends Component {
              />
             )}
             />
+
+            
           <Route
             exact
             path="/favorites"

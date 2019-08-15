@@ -16,7 +16,7 @@ this.fetchPopularMovies();
 this.fetchNewestMovies();
 }
 fetchPopularMovies=()=>{
-  axios.get(`${process.env.REACT_APP_BASEURL}/route/getMovies`)
+  axios.get(`${process.env.REACT_APP_BASEURL}/api/movieApi/getMovies`)
   .then((themovies)=>{
     this.setState({
       movies: themovies.data.movies,
@@ -25,7 +25,7 @@ fetchPopularMovies=()=>{
   }).catch((err)=>console.log(err))
 }
 fetchNewestMovies=()=>{
-  axios.get(`${process.env.REACT_APP_BASEURL}/route/newMovies`)
+  axios.get(`${process.env.REACT_APP_BASEURL}/api/movieApi/newMovies`)
   .then((themovies)=>{
     this.setState({
       newMovies: themovies.data.movies,
@@ -51,7 +51,6 @@ getNewestMovies=()=>{
       <Link className="links " key={i} to={`/movieInfo/${movies.imdb_id}`}><img className="imageSizeHome force-overflow zoom hoverable z-depth-5 " src={movies.images.banner}  alt=""/></Link>
     );
   })
-
 }
 
 render(){

@@ -52,7 +52,7 @@ class Profile extends Component {
     theRequest.append('nickName', theUserName);
     theRequest.append('imageUrl',this.state.newimage);
 
-    Axios.post(`${process.env.REACT_APP_BASEURL}/route/user/edit/${this.props.user._id}`, theRequest)
+    Axios.post(`${process.env.REACT_APP_BASEURL}/api/user/user/edit/${this.props.user._id}`, theRequest)
       .then(() => {
         console.log("updating user info");
         this.props.getUser();
@@ -61,7 +61,7 @@ class Profile extends Component {
   };
 
   deleteUser = () => {
-    Axios.post(`${process.env.REACT_APP_BASEURL}/route/user/delete/${this.props.user._id}`)
+    Axios.post(`${process.env.REACT_APP_BASEURL}/api/user/user/delete/${this.props.user._id}`)
       .then(() => {
         this.props.getUser();
         this.props.history.push("/");

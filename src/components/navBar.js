@@ -15,7 +15,7 @@ state={
  doLogOut = () => {
 
   Axios.post(
-    `${process.env.REACT_APP_BASEURL}/route/logout`,
+    `${process.env.REACT_APP_BASEURL}/api/auth/logout`,
     {},
     { withCredentials: true }
   )
@@ -32,8 +32,9 @@ state={
 }
 
 searchBar=(e)=> {   
-   //e.preventDefault();
+  
   this.props.history.push(`/showResults/${this.state.searchValue}`)
+ 
  }
 
  handleChange = (ev) => {

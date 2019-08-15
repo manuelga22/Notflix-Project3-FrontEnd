@@ -16,7 +16,7 @@ class LogIn extends Component{
     const username = this.state.username;
     const password = this.state.password;
   
-    Axios.post(`${process.env.REACT_APP_BASEURL}/route/login`, {
+    Axios.post(`${process.env.REACT_APP_BASEURL}/api/auth/login`, {
       username:username, 
       password:password,
     }, {withCredentials: true})

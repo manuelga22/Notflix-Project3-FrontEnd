@@ -26,7 +26,7 @@ class movieInfo extends Component {
   getLinksForDownload=()=>{
     const parseTorrent = require("parse-torrent");
     axios
-      .get(`${process.env.REACT_APP_BASEURL}/route/movieInfo/${this.props.match.params.id}`)
+      .get(`${process.env.REACT_APP_BASEURL}/api/movieApi/movieInfo/${this.props.match.params.id}`)
       .then(movies => {
         let Info = movies.data.movieInfo;
         console.log(Info);
@@ -63,7 +63,7 @@ class movieInfo extends Component {
 
           axios
             .post(
-              `${process.env.REACT_APP_BASEURL}/route/addToFavorites/${this.props.user._id}/${
+              `${process.env.REACT_APP_BASEURL}/api/user/addToFavorites/${this.props.user._id}/${
                 this.props.match.params.id
               }`,
               {}
@@ -79,7 +79,7 @@ class movieInfo extends Component {
           this.props.user.favorites.forEach(ObjectIds => {
       
             axios
-              .get(`${process.env.REACT_APP_BASEURL}/route/getMovie/${ObjectIds._id}`)
+              .get(`${process.env.REACT_APP_BASEURL}/api/user/getMovie/${ObjectIds._id}`)
               .then(res => {
           
                 if (this.props.match.params.id === res.data.movie) {
@@ -106,7 +106,7 @@ class movieInfo extends Component {
     const comment = this.state.comment;
     this.props.user.favorites.forEach(async(movies)=>{
       if(movies.movies ===this.props.match.params.id ){
-        await axios.post(`${process.env.REACT_APP_BASEURL}/route/createNote/${movies._id}`,{
+        await axios.post(`${process.env.REACT_APP_BASEURL}/api/notes/createNote/${movies._id}`,{
           review:comment
         })
       }
