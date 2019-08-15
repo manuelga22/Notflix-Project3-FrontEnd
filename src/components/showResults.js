@@ -13,10 +13,13 @@ componentDidMount() {
   this.fetchMovies(movies)
 }
 
-shouldComponentUpdate(){
+async shouldComponentUpdate(){
   
   const movies = this.props.match.params.movies;
-  this.fetchMovies(movies)
+
+  await this.fetchMovies(movies)
+  console.log(this.state.movieResults)
+  
   return true;
 }
 
