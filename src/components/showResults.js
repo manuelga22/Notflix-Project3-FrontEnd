@@ -4,24 +4,26 @@ import Axios from 'axios';
 
 class showResults extends Component{
   state = {
-    movieResults: []
+    movieResults: [],
+    update: true
   }
 
 componentDidMount() {
-
   const movies = this.props.match.params.movies;
   this.fetchMovies(movies)
 }
 
-async shouldComponentUpdate(){
-  
-  const movies = this.props.match.params.movies;
+//  shouldComponentUpdate(){
+//   const movies = this.props.match.params.movies;
+//   try{
+//     this.fetchMovies(movies)
+//     console.log(this.state.movieResults)
+//     return false;
+//   }catch(err){
+//    return true;
+//   } 
+// }
 
-  await this.fetchMovies(movies)
-  console.log(this.state.movieResults)
-  
-  return true;
-}
 
 fetchMovies = (movies) => {
   Axios.get(`${process.env.REACT_APP_BASEURL}/api/movieApi/search/${movies}`)
@@ -53,9 +55,8 @@ render(){
     {this.state.movieResults.length>=1? 
     this.showMovies()
     :       
-      <div className="progress white">
-      <div className="indeterminate red"></div>
-      </div> }
+     <h3>No Results found</h3>
+    }
       
   </div>
   );

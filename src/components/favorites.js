@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -9,7 +9,6 @@ class Favorites extends Component {
     moviesToShowInFavorites:null
   };
   showMoviesInFavorites = () => {
-   console.log(this.state.moviesToShowInFavorites)
    this.props.getUser();
     if(this.props.user.favorites.length===0){
          
@@ -20,8 +19,8 @@ class Favorites extends Component {
                  <h2>No Movies in Favorites</h2>
           );       
      }
+
     return this.state.moviesToShowInFavorites.map((movies, i) => {
-      console.log(movies)
       return (
           <div className="favoritesList">
             

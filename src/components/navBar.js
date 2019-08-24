@@ -31,10 +31,9 @@ state={
     });
 }
 
-searchBar=(e)=> {   
+ searchBar=(e)=> {   
   
   this.props.history.push(`/showResults/${this.state.searchValue}`)
- 
  }
 
  handleChange = (ev) => {

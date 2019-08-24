@@ -115,6 +115,7 @@ class movieInfo extends Component {
   } 
 
   isMovieInFavorites=()=>{
+    if(this.props.user){
     this.props.user.favorites.forEach((movies)=>{
         if(movies.movies ===this.props.match.params.id ){
           this.setState({
@@ -122,6 +123,7 @@ class movieInfo extends Component {
           }) 
         }
     }) 
+  }
   }
 
   getInfoOfMovie = () => {
