@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import {Link} from 'react-router-dom';
 import Axios from 'axios';
 
 class showResults extends Component{
   state = {
     movieResults: [],
-    update: true
+    done: false
   }
 
 componentDidMount() {
@@ -29,11 +29,14 @@ fetchMovies = (movies) => {
   Axios.get(`${process.env.REACT_APP_BASEURL}/api/movieApi/search/${movies}`)
   .then((response)=>{
     this.setState({
-      movieResults: response.data.movie
+      movieResults: response.data.movie,
+      done:true
     })
     
-  }).catch(err=>{
-
+  }).catch(err=>{   
+    this.setState({
+      done:true
+    })
     console.log(err)
   })
 }
@@ -54,8 +57,15 @@ render(){
 
     {this.state.movieResults.length>=1? 
     this.showMovies()
-    :       
-     <h3>No Results found</h3>
+    : 
+    <Fragment>
+    {this.state.done === true?
+      <h3>No results found</h3>
+      :
+      <h3>Loading</h3>
+    }
+    </Fragment>
+     
     }
       
   </div>

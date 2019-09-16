@@ -11,7 +11,7 @@ import MovieInfo from "./components/movieInfo";
 import showResults from "./components/showResults";
 import SeeReviews from "./components/seeReviews";
 import Footer from "./components/footer"
-import { Route, Switch } from "react-router-dom";
+import { BrowserRouter,Route, Switch } from "react-router-dom";
 import axios from "axios";
 //import StreamMovie from "./components/streamMovie";
 
@@ -66,6 +66,7 @@ class App extends Component {
 
   render() {
     return (
+      
       <div className="App">
         <div className="content"> 
         <Route
@@ -165,6 +166,7 @@ class App extends Component {
         
         </div>
         <Footer/>
+    
       </div>
     );
   }
