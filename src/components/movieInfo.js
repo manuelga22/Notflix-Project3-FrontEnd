@@ -135,9 +135,9 @@ class movieInfo extends Component {
         <div className="titleAndSynopsis">
           <h1 className="titleInfo">{this.state.title}</h1>
           <p className="synopsis">{this.state.synopsis}</p>
-          <a className="btn downloadBtn " href={this.state.downloadLink}>
+          {/* <a className="btn downloadBtn " href={this.state.downloadLink}>
             Download
-          </a>
+          </a> */}
 
           {this.props.user ? (
             // <form >
